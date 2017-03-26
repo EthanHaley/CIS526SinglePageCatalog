@@ -9,6 +9,8 @@ var db = new sqlite3.Database('catalogApp.sqlite3', function(err) {
 	if(err) console.error(err);
 });
 
+var router = new (require('./lib/route')).Router(db);
+
 router.get('/', function(req, res) {
 	fs.readFile('public/index.html', function(err, body) {
 		res.end(body);
@@ -21,7 +23,10 @@ router.get('/app.js', function(req, res) {
 	});
 });
 
-var migrate = require('./lib/migrage');
+var entry = require('./src/resource/entry');
+router.resource('/entry', entry)
+
+var migrate = require('./lib/migrate');
 migrate(db, 'migrations', function(err) {
 	var server = new http.Server(function(req, res) {
 		router.route(req, res);
@@ -29,4 +34,4 @@ migrate(db, 'migrations', function(err) {
 	server.listen(port, function() {
 		console.log("Catalog running on port " + port);
 	});
-})
+});

@@ -1,5 +1,5 @@
 var xhr = new XMLHttpRequest();
-xhr.open('GET', '/entries/');
+xhr.open('GET', '/entry/');
 xhr.send(null);
 
 xhr.onreadystatechange = function() {

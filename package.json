@@ -1,0 +1,22 @@
+{
+  "name": "cis526singlepagecatalog",
+  "version": "1.0.0",
+  "description": "A simple one page web application, created for CIS 526 at Kansas State University",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EthanHaley/CIS526SinglePageCatalog.git"
+  },
+  "author": "Ethan Haley",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EthanHaley/CIS526SinglePageCatalog/issues"
+  },
+  "homepage": "https://github.com/EthanHaley/CIS526SinglePageCatalog#readme",
+  "dependencies": {
+    "sqlite3": "^3.1.8"
+  }
+}

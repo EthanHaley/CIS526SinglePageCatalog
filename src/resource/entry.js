@@ -35,8 +35,9 @@ function create(req, res, db) {
 
 	req.on("end", function() {
 		var entry = JSON.parse(body);
-		db.run("INSERT INTO entries (name, description, picture) VALUE (?, ?, ?",
-			[entry.name, entry.description, entry.picture],
+		addImage = uploadImage(req, res);
+		db.run("INSERT INTO entries (name, description, image) VALUE (?, ?, ?)",
+			[entry.name, entry.description, addImage],
 			function(err) {
 				if(err) {
 					console.error(err);
@@ -86,8 +87,9 @@ function update(req, res, db) {
 
 	req.on("end", function() {
 		var entry = JSON.parse(body);
-		db.run("UPDATE entries SET name=?, description=?, picture=? WHERE id=?",
-			[entry.name, entry.description, entry.picture, id],
+		addImage = uploadImage(req, res);
+		db.run("UPDATE entries SET name=?, description=?, image=? WHERE id=?",
+			[entry.name, entry.description, entry.addImage, id],
 			function(err) {
 				if(err) {
 					console.error(err);
@@ -112,5 +114,18 @@ function destroy(req, res, db) {
 		}
 		res.statusCode = 200;
 		res.end();
+	});
+}
+
+function uploadImage(req, res) {
+	multipart(req, res, function(req, res) {
+		if(!req.body.image.data) {
+			console.error("No File in Upload");
+			res.statusCode = 400;
+			res.statusMessage = "No File Specified";
+			res.end("No File Specified");
+			return;
+		}
+		return req.body.image.data;
 	});
 }

@@ -1,4 +1,4 @@
-function loadIndex() {
+/*function loadIndex() {
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', '/entry/');
 	xhr.send(null);
@@ -40,6 +40,23 @@ function loadIndex() {
 			}
 		}
 	}
+}*/
+
+function loadIndex() {
+	$.get('/entry', function(entries, status) {
+		if(status == 'success') {
+			$('body').clear();
+			entries.forEach(function(entry) {
+				var link = $('a')
+					.text(entry.name)
+					.attr('href', '/entry/' + entry.id)
+					.on('click', function(e) {
+						e.preventDefault();
+						loadEntry('/entry/' + entry.id);
+					});
+			});
+		}
+	});
 }
 
 function loadEntry(url) {

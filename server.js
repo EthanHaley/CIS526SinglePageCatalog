@@ -8,6 +8,7 @@ var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('catalogApp.sqlite3', function(err) {
 	if(err) console.error(err);
 });
+
 db.run("CREATE TABLE IF NOT EXISTS entries (id INTEGER PRIMARY KEY, name TEXT, description TEXT, image BLOB)");
 
 var router = new (require('./lib/route')).Router(db);

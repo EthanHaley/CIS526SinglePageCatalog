@@ -24,7 +24,7 @@ router.get('/app.js', function(req, res) {
 	});
 });
 
-var entry = require('./src/resource/entry');
+var entry = require('./src/resource/entries');
 router.resource('/entry', entry)
 
 var migrate = require('./lib/migrate');

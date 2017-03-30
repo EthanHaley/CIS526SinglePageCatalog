@@ -1,4 +1,3 @@
-
 function loadIndex() {
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', '/entry/');
@@ -20,8 +19,22 @@ function loadIndex() {
 						loadEntry(name.href);
 					}
 				});
-				form = entryForm();
-				document.body.appendChild(form);
+				//form = entryForm();
+				//document.body.appendChild(form);
+				$('<button>').text('Add Entry').on('click', function() {
+					$('body').load('/public/form.html', function() {
+						$('form').on('submit', function(event) {
+							event.preventDefault();
+							var data = new FormData($('form')[0]);
+							$.post({
+								url:'/entry',
+								data: data,
+								contentType: 'multipart/form-data',
+								processData: false
+							});
+						});
+					});
+				});	
 			} else {
 				console.log('Error: ' + xhr.status);
 			}
@@ -61,13 +74,13 @@ function loadEntry(url) {
 
 function entryForm() {
 	return '<form action="/entry/" method=POST">' +
-		'	<label for="name">' +
+		'	<label for="name"> Name: ' +
 		'		<input name="name" type="text" />' +
 		'	</label>' +
-		'	<label for="description" type="text">' +
+		'	<label for="description" type="text"> Description: ' +
 		'		<input name="description" type="text" />' +
 		'	</label>' +
-		'	<label for="image" type="file">' +
+		'	<label for="image" type="file"> Image: ' +
 		'		<input name="image" type="file" />' +
 		'	</label>' +
 		'	<input type="submit" value="Add Entry" />' +

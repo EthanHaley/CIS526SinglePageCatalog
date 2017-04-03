@@ -64,14 +64,14 @@ function loadIndex() {
 			// Send the request (JSON body)
 			xhr.send(JSON.stringify(project));
         }*/
-        formButton = document.createElement('input');
+        var formButton = document.createElement('input');
         formButton.value = 'Add New Entry';
         formButton.type = 'submit';
         formButton.id = 'formButton';
         $('body').append(formButton);
         formButton.onclick = function(event) {
         	event.preventDefault()
-        	$('body').load('/form.html');
+        	showForm();
         }
       } else {
         console.log('Error: ' + xhr.status); // An error occurred during the request.
@@ -160,15 +160,18 @@ function loadEntry(url) {
 	}
 }
 
-function processForm(event) {
-	event.preventDefault();
-	console.log("Processing Form");
+function showForm() {
+	$('body').load('/form.html');
+	$('entry-form').on('submit', function(event) {
+		event.preventDefault();
+		var data = new FormData($('form')[0]);
+		$.post({
+			url:'/entry',
+			data: data,
+			contentType: 'multipart/form-data',
+			processData: false
+		});
+	});
 }
 
 loadIndex();
-var form = document.getElementById('entry-form');
-if (form.attachEvent) {
-    form.attachEvent("submit", processForm);
-} else {
-    form.addEventListener("submit", processForm);
-}

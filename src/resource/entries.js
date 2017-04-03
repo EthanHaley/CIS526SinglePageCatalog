@@ -21,22 +21,17 @@ function list(req, res, db) {
 }
 
 function create(req, res, db) {
-	var body = "";
-
+	var multipart = require('/lib/form-multipart');
+	var urlencoded = require('/lib/form-urlencoded');
+	var json = require('/lib/form-json');
 	req.on("error", function(err) {
 		console.error(err);
 		res.statusCode = 500;
 		res.end("Server Error");
 	});
 
-	req.on("data", function(data) {
-		body += data;
-	});
-
-	req.on("end", function() {
-		console.log('Posted to Create');
-		console.log(body);
-		/*
+	function insert(req, res, db) {
+		var entry = req.body;	
 		db.run("INSERT INTO entries (name, description, imageFilename, image) VALUE (?, ?, ?, ?)",
 			[body.name, body.description, body.image.name, body.image.data],
 			function(err) {
@@ -49,8 +44,30 @@ function create(req, res, db) {
 				res.statusCode = 200;
 				res.end();
 			}
-		);*/
-	});
+		);
+	}
+
+	switch(req.headers['content-type']) {
+    case 'multipart/form-data':
+      // A multipart form
+      multipart(req, res, function(req, res){
+        insert(req, res, db);
+      });
+      break;
+    case 'application/x-www-form-urlencoded':
+      // Standard form encoding
+      urlencoded(req, res, function(req, res){
+        insert(req, res, db);
+      });
+      break;
+    case 'application/json':
+    case 'text/json':
+      // A JSON string\
+      json(req, res, function(req, res) {
+        insert(req, res, db);
+      });
+      break;
+  }
 }
 
 function read(req, res, db) {

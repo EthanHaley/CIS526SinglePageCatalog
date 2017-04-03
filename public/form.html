@@ -1,4 +1,4 @@
-<form action="/entry/" method=POST">
+<form id="entry-form">
 	<label for="name"> Name: 
 		<input name="name" type="text" />
 	</label>
@@ -7,6 +7,8 @@
 	</label>
 	<label for="image" type="file"> Image: 
 		<input name="image" type="file" />
-	</label>' +
-	<input type="submit" value="Add Entry" />
-</form>;
+	</label>
+	<input id="addButton" type="submit" value="Add Entry" />
+</form>
+
+<input type="button" value=" Home " onclick="loadIndex()"/>

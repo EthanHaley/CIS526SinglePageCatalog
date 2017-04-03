@@ -9,7 +9,7 @@ var db = new sqlite3.Database('catalogApp.sqlite3', function(err) {
 	if(err) console.error(err);
 });
 
-db.run("CREATE TABLE IF NOT EXISTS entries (id INTEGER PRIMARY KEY, name TEXT, description TEXT, image BLOB)");
+//db.run("CREATE TABLE IF NOT EXISTS entries (id INTEGER PRIMARY KEY, name TEXT, description TEXT, imageFilename TEXT, image BLOB)");
 
 var router = new (require('./lib/route')).Router(db);
 
@@ -25,6 +25,11 @@ router.get('/app.js', function(req, res) {
 	});
 });
 
+router.get('/form.html', function(req, res) {
+	fs.readFile('public/form.html', function(err, body) {
+		res.end(body);
+	});
+});
 var entry = require('./src/resource/entries');
 router.resource('/entry', entry)
 
